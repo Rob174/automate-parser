@@ -4,7 +4,8 @@ with open("./grammar.txt", "r") as f:
     L = []
     dico_elements_parses = {}
     for i,l in enumerate(f.readlines()):
-        [head, rule] = [e.strip() for e in l.strip().split("->")]
+        l.replace(" ", "")
+        [head, rule] = [e.strip() for e in l.strip().split(":")]
         if head not in dico_elements_parses.keys():
             dico_elements_parses[head] = ["parse%s%d" % (head,i)]
         else:
