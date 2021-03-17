@@ -13,14 +13,15 @@ with open(args.path_grammar, "r") as f:
     L = ["""
 char* slice_str(char * input) {
     int length = strlen(input);
-    if(length == 0) {
+    if(length == 1) {
         return 0;
     }
     char * new_str = malloc(sizeof(char)*(length-1));
-    for (int i = 1; i < length; i++) {
+    for (int i = 1; i < length-1; i++) {
         new_str[i] = input[i];
     }
     new_str[length-1] = '\\0';
+    return new_str;
 }
 """]
 
@@ -75,8 +76,8 @@ char* slice_str(char * input) {
     L.append("\t}")
 
     L.append("\tchar * wordToParse = argv[1];")
-    L.append("\tint ok = parse" + list(dico_elements_parses.keys())[0] + "(wordToParse);")
-    L.append("\tif(ok == 0) {")
+    L.append("\tchar* okReste = parse" + list(dico_elements_parses.keys())[0] + "(wordToParse);")
+    L.append("\tif(okReste != 0 && strlen(okReste) == 0) {")
     L.append("\t\tprintf(\"OK\\n\");")
     L.append("\t}")
     L.append("\telse {")

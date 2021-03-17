@@ -4,3 +4,5 @@ S : A B
 A : A A a
 A : a
 B : b
+
+S => a S b => a A B b => a a b b
