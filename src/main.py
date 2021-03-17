@@ -1,6 +1,6 @@
 import os
 import argparse
-
+print(os.getcwd())
 parser = argparse.ArgumentParser()
 parser.add_argument('path_grammar', type=str,
                     help='Chemin vers le fichier de grammaire')
@@ -11,6 +11,7 @@ args = parser.parse_args()
 
 with open(args.path_grammar, "r") as f:
     L = []
+
     dico_elements_parses = {}
     for i,l in enumerate(f.readlines()):
         l.replace(" ", "")
@@ -20,9 +21,9 @@ with open(args.path_grammar, "r") as f:
         else:
             dico_elements_parses[head].append("parse%s%d" % (head,i))
 
-        L.insert(0, "int parse%s%d(char * input);" % (head,i))
         L.append("int parse%s%d(char * input) {" % (head,i))
         L.append("\tint ok;")
+
         for i,lettre in enumerate(rule):
             if lettre.lower() != lettre:
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
@@ -44,10 +45,23 @@ with open(args.path_grammar, "r") as f:
         L.append("\treturn ok;")
         L.append("}")
 
+    """ Including libraries """
+    L.insert(0, "#include <stdio.h>")
+    L.insert(0, "#include <stdlib.h>")
+    
+    """ Adding the main() """
+    L.append("int main(int argc, char** argv) {") # main definition with args
+    # Check if there is the right number of parameters (2: program name and the word to parse)
+    L.append("\tif(argc != 2) {")
+    L.append("\t\tprintf(\"Command type: %s \"word_to_parse\"\", argv[0]);")
+    L.append("\t\texit(1);")
+    L.append("\t}")
 
-    L.append("int main (char *argv[]){ ")
-    L.append("\t parse" +  list(dico_elements_parses.keys())[0] + "0(argv[0]);")
+    L.append("\tchar * wordToParse = agrv[1];")
+    L.append("\tparse" + list(dico_elements_parses.keys())[0] + "0(wordToParse);")
+
+    L.append("\treturn 0;")
     L.append("}")
-with open(args.nom_fichier_output+".c","w") as f:
+with open(args.nom_fichier_output+".c", "w") as f:
     f.write("\n".join(L))
 print("\n".join(L))
