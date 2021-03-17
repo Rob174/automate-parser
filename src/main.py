@@ -13,12 +13,12 @@ with open(args.path_grammar, "r") as f:
     L = ["""
 char* slice_str(char * input) {
     int length = strlen(input);
-    if(length == 1) {
-        return 0;
+    if(length == 0) {
+        return \"\";
     }
     char * new_str = malloc(sizeof(char)*(length-1));
-    for (int i = 1; i < length-1; i++) {
-        new_str[i] = input[i];
+    for (int i = 1; i < length; i++) {
+        new_str[i-1] = input[i];
     }
     new_str[length-1] = '\\0';
     return new_str;
@@ -36,7 +36,7 @@ char* slice_str(char * input) {
 
         L.insert(0,"char* parse%s%d(char * input);" % (head,i))
         L.append("char* parse%s%d(char * input) {" % (head,i))
-        L.append("\tprintf(\"Passage dans parse%s%d\\n\");" % (head,i))
+        L.append("\tprintf(\"Passage dans parse%s%d %%s\\n\",input);" % (head,i))
         L.append("\tchar* okReste = input;")
 
         for i,lettre in enumerate(rule):
@@ -47,7 +47,7 @@ char* slice_str(char * input) {
                 Si un terminal après s'arrêter au terminal"""
                 L.append("\tif (okReste == NULL) return 0;")
             else:
-                L.append(f"\tif (input[0] != '{lettre}')")
+                L.append(f"\tif (okReste[0] != '{lettre}')")
                 L.append(f"\t\treturn 0;")
                 L.append("\telse {")
                 L.append(f"\t\t okReste = slice_str(okReste);")
@@ -57,11 +57,12 @@ char* slice_str(char * input) {
     for head,liste_fct in dico_elements_parses.items():
         L.insert(0,"char* parse%s(char *input);" % head)
         L.append("char* parse%s(char *input) {" % head)
-        L.append("\tprintf(\"Passage dans parse%s\\n\");" % head)
-        L.append("\tchar* okReste = input,i = 0;")
+        L.append("\tprintf(\"Passage dans parse%s %%s\\n\",input);" % head)
+        L.append("\tchar* okReste = 0;int i = 0;")
         L.append(f"\tchar* (*fun_ptrs[{len(liste_fct)}])(char*) = " + "{"+",".join(liste_fct)+"};")
-        L.append("\twhile(i<%d && okReste != 0)" % len(liste_fct))
+        L.append("\twhile(i<%d && (okReste == 0 || strlen(okReste) != 0)) {" % len(liste_fct))
         L.append("\t\tokReste = fun_ptrs[i](input);")
+        L.append("\t\ti++;\n\t}")
         L.append("\treturn okReste;")
         L.append("}")
 
