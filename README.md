@@ -1,4 +1,5 @@
 
+
 # automate-parser v1.0
 
 Ce programme réalisé en python dans le cadre de la formation d'automates et langages de l'[INSA Toulouse](http://www.insa-toulouse.fr/) a pour but de générer un programme C, reconnaissant une grammaire de type 2 (context free) précédement donnée.
@@ -22,6 +23,7 @@ Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**
 |S : a S b <br> S : a b|`a a b b b`              |![#e55039](https://via.placeholder.com/15/e55039/000000?text=+) **`KO`**               |
 | S : a S b <br> S : a b <br> S : A B <br> A : A A a <br> A : a <br> B : b |`a a a a a b b` |![#78e08f](https://via.placeholder.com/15/78e08f/000000?text=+) **`OK`**				|
 | S : a S b <br> S : a b <br> S : A B <br> A : A A a <br> A : a <br> B : b |`a a a a b b b` |![#e55039](https://via.placeholder.com/15/e55039/000000?text=+) **`KO`**				|
+| S : int <br> S : string <br> S : { Assoc } <br> Assoc : KeyVal AssocBis <br> Assoc : <br> AssocBis : , KeyVal AssocBis <br> AssocBis : <br> KeyVal : id = S |`{id = int , id = string}` |![#78e08f](https://via.placeholder.com/15/78e08f/000000?text=+) **`OK`**				|
 
 
 ## Détails de la réalisation:
@@ -31,9 +33,11 @@ Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**
 	- Pour chaque ligne (i.e. règle) lue:
 		- Séparer la partie gauche de la partie droite
 		- Ajouter une entrée dans le dictionnaire correspondant au nom de la fonction à appeller
-- Générer les fonctions pour chaque règle du dictionnaire
+- Générer les fonctions pour chaque règle du dictionnaire, qui feront appel à:
+	- la fonction `strequ()` permet de comparer le paramètre au terminal attendu
+	- la fonction `next_val()` permet de se déplacer au non-terminale suivant
 - Générer les fonctions "mères" *(cf. Définitions)*
-- Générer la fonction `main()` acceptant un argument (le mot qui sera parsé par le code C) et appelle
+- Générer la fonction `main()` acceptant un argument (le mot qui sera parsé par le code C) et appelle la première fonction mère
 
 ## Définitions
 #### grammaire type:
