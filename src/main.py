@@ -16,10 +16,12 @@ with open("./grammar.txt", "r") as f:
         for i,lettre in enumerate(rule):
             if lettre.lower() != lettre:
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
-                L.append(f"\tok = parse{lettre}(input[{i}]);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
+                L.append(f"\tok = parse{lettre}(input[{i*2}]);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
                 """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
                 Si un terminal après s'arrêter au terminal"""
                 L.append("\tif (ok == 0) return 0;")
+            else:
+                L.append(f"\tif (input[{i*2}] != '{lettre}') return 0;")
         L.append("\treturn 1;")
         L.append("}\n")
     for head,liste_fct in dico_elements_parses.items():
