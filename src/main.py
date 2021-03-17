@@ -32,4 +32,9 @@ with open("./grammar.txt", "r") as f:
         L.append("\t\tok = fun_ptrs[i](input);")
         L.append("\treturn ok;")
         L.append("}")
+
+
+    L.append("int main (char *argv[]){ ")
+    L.append("\t parse" +  list(dico_elements_parses.keys())[0] + "0(argv[0]);")
+    L.append("}")
 print("\n".join(L))
