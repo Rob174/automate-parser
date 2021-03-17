@@ -26,32 +26,35 @@ int strequ(char* str1,char* str2) {
     }
     return 1;
 }
-next next_val(char * input) {
+next* next_val(char * input) {
+    next* n;
     if(input == 0) { 
-        next n = {0,0};
+        n->next_val = 0;
+        n->suite = 0;
         return n;
     }
     int length = strlen(input);
     if(length == 0) { 
-        next n = {0,0};
+        n->next_val = 0;
+        n->suite = 0;
         return n;
     }
-    next n;
-    n.next_val = malloc(length*sizeof(char));
-    n.suite = malloc(length*sizeof(char));
+    n = malloc(sizeof(next));
+    n->next_val = malloc(length*sizeof(char));
+    n->suite = malloc(length*sizeof(char));
     int dans_next_val = 1;
     int longueur_next_val;
     for (int i = 0;i < length;i++) {
         if(input[i] != ' ' && dans_next_val == 1) {
-            n.next_val[i] = input[i];
+            n->next_val[i] = input[i];
         }
         else if (input[i] == ' ' && dans_next_val == 1) {
-            n.next_val[i] = '\\0';
+            n->next_val[i] = '\\0';
             dans_next_val = 0;
-            longueur_next_val = strlen(n.next_val);
+            longueur_next_val = strlen(n->next_val);
         }
         else {
-            n.suite[i-longueur_next_val-1] = input[i];
+            n->suite[i-longueur_next_val-1] = input[i];
         }
     }
         
@@ -72,20 +75,23 @@ next next_val(char * input) {
         L.append("char* parse%s%d(char * input) {" % (head,i))
         L.append("\tprintf(\"Passage dans parse%s%d %%s\\n\",input);" % (head,i))
         L.append("\tchar* okReste = input;")
-
-        for i,lettre in enumerate(rule.split()):
+        rules = rule.split()
+        for i,lettre in enumerate(rules):
             if lettre.lower() != lettre: # Cas non-terminal
+                if lettre == head and i == 0:
+                    L.append(f"printf(\"")
+                    break
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
                 L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
                 """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
                 Si un terminal après s'arrêter au terminal"""
                 L.append(f"\tif (okReste == NULL) return 0;")
             else: # Cas terminal
-                L.append(f"\tnext n{i} = next_val(okReste);")
-                L.append(f"\tif (strequ(n{i}.next_val,\"{lettre}\") == 0)")
+                L.append(f"\tnext* n{i} = next_val(okReste);")
+                L.append(f"\tif (strequ(n{i}->next_val,\"{lettre}\") == 0)")
                 L.append(f"\t\treturn 0;")
                 L.append("\telse {")
-                L.append(f"\t\t okReste = n{i}.suite;")
+                L.append(f"\t\t okReste = n{i}->suite;")
                 L.append("\t}")
         L.append("\treturn okReste;")
         L.append("}\n")
@@ -95,7 +101,7 @@ next next_val(char * input) {
         L.append("\tprintf(\"Passage dans parse%s %%s\\n\",input);" % head)
         L.append("\tchar* okReste = 0;int i = 0;")
         L.append(f"\tchar* (*fun_ptrs[{len(liste_fct)}])(char*) = " + "{"+",".join(liste_fct)+"};")
-        L.append("\twhile(i<%d && (okReste == 0 || strlen(okReste) != 0)) {" % len(liste_fct))
+        L.append("\twhile(i<%d && (okReste == 0)) {" % len(liste_fct))
         L.append("\t\tokReste = fun_ptrs[i](input);")
         L.append("\t\ti++;\n\t}")
         L.append("\treturn okReste;")
