@@ -7,4 +7,4 @@ read parser;
 python main.py ${grammar} -o ${parser};
 nom_fichier="${parser}.c";
 echo "${nom_fichier}"
-gcc -Wall -o ${parser} -c  ${nom_fichier};
+gcc -Wall -o ${parser}   ${nom_fichier};

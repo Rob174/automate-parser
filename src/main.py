@@ -27,7 +27,7 @@ with open(args.path_grammar, "r") as f:
         for i,lettre in enumerate(rule):
             if lettre.lower() != lettre:
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
-                L.append(f"\tok = parse{lettre}(input[{i*2}]);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
+                L.append(f"\tok = parse{lettre}(input);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
                 """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
                 Si un terminal après s'arrêter au terminal"""
                 L.append("\tif (ok == 0) return 0;")
@@ -58,7 +58,13 @@ with open(args.path_grammar, "r") as f:
     L.append("\t}")
 
     L.append("\tchar * wordToParse = argv[1];")
-    L.append("\tparse" + list(dico_elements_parses.keys())[0] + "0(wordToParse);")
+    L.append("\tint ok = parse" + list(dico_elements_parses.keys())[0] + "(wordToParse);")
+    L.append("\tif(ok == 0) {")
+    L.append("\t\tprintf(\"OK\\n\");")
+    L.append("\t}")
+    L.append("\telse {")
+    L.append("\t\tprintf(\"KO\\n\");")
+    L.append("\t}")
 
     L.append("\treturn 0;")
     L.append("}")
