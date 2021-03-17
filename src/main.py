@@ -1,6 +1,15 @@
 import os
+import argparse
 
-with open("./grammar.txt", "r") as f:
+parser = argparse.ArgumentParser()
+parser.add_argument('path_grammar', type=str,
+                    help='Chemin vers le fichier de grammaire')
+parser.add_argument('-o', dest='nom_fichier_output',
+                    help="Spécifie le nom du fichier c de destination (sans l'extension)")
+
+args = parser.parse_args()
+
+with open(args.path_grammar, "r") as f:
     L = []
     dico_elements_parses = {}
     for i,l in enumerate(f.readlines()):
@@ -39,4 +48,6 @@ with open("./grammar.txt", "r") as f:
     L.append("int main (char *argv[]){ ")
     L.append("\t parse" +  list(dico_elements_parses.keys())[0] + "0(argv[0]);")
     L.append("}")
+with open(args.nom_fichier_output+".c","w") as f:
+    f.write("\n".join(L))
 print("\n".join(L))
