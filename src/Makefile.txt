@@ -1,0 +1,10 @@
+makefile:
+
+greeting () {
+  echo Specify a name for your grammar: \n
+  read grammar
+  echo $grammar is your grammar, now specify a name for your parser: \n
+  read parser
+  python main.py $grammar -o $parser
+  gcc -Wall -o $parser.c -c $parser
+}
