@@ -33,9 +33,11 @@ Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**
 	- Pour chaque ligne (i.e. règle) lue:
 		- Séparer la partie gauche de la partie droite
 		- Ajouter une entrée dans le dictionnaire correspondant au nom de la fonction à appeller
-- Générer les fonctions pour chaque règle du dictionnaire
+- Générer les fonctions pour chaque règle du dictionnaire, qui feront appel à:
+	- la fonction `strequ()` permet de comparer le paramètre au terminal attendu
+	- la fonction `next_val()` permet de se déplacer au non-terminale suivant
 - Générer les fonctions "mères" *(cf. Définitions)*
-- Générer la fonction `main()` acceptant un argument (le mot qui sera parsé par le code C) et appelle
+- Générer la fonction `main()` acceptant un argument (le mot qui sera parsé par le code C) et appelle la première fonction mère
 
 ## Définitions
 #### grammaire type:
