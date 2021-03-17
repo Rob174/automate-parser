@@ -21,7 +21,6 @@ with open(args.path_grammar, "r") as f:
         else:
             dico_elements_parses[head].append("parse%s%d" % (head,i))
 
-        L.insert(0, "int parse%s%d(char * input);" % (head,i))
         L.append("int parse%s%d(char * input) {" % (head,i))
         L.append("\tint ok;")
 
