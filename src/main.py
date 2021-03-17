@@ -1,4 +1,6 @@
-with open("../grammar.txt", "r") as f:
+import os
+
+with open("./grammar.txt", "r") as f:
     L = []
     dico_elements_parses = {}
     for i,l in enumerate(f.readlines()):
