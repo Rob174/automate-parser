@@ -34,7 +34,9 @@ char* slice_str(char * input) {
         else:
             dico_elements_parses[head].append("parse%s%d" % (head,i))
 
+        L.insert(0,"char* parse%s%d(char * input);" % (head,i))
         L.append("char* parse%s%d(char * input) {" % (head,i))
+        L.append("\tprintf(\"Passage dans parse%s%d\\n\");" % (head,i))
         L.append("\tchar* okReste = input;")
 
         for i,lettre in enumerate(rule):
@@ -53,8 +55,9 @@ char* slice_str(char * input) {
         L.append("\treturn okReste;")
         L.append("}\n")
     for head,liste_fct in dico_elements_parses.items():
-        L.insert(0, "char* parse%s(char * input);" % head)
+        L.insert(0,"char* parse%s(char *input);" % head)
         L.append("char* parse%s(char *input) {" % head)
+        L.append("\tprintf(\"Passage dans parse%s\\n\");" % head)
         L.append("\tchar* okReste = input,i = 0;")
         L.append(f"\tchar* (*fun_ptrs[{len(liste_fct)}])(char*) = " + "{"+",".join(liste_fct)+"};")
         L.append("\twhile(i<%d && okReste != 0)" % len(liste_fct))
