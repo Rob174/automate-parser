@@ -45,7 +45,7 @@ next next_val(char * input) {
         if(input[i] != ' ' && dans_next_val == 1) {
             n.next_val[i] = input[i];
         }
-        else if (input[i] == ' ') {
+        else if (input[i] == ' ' && dans_next_val == 1) {
             n.next_val[i] = '\\0';
             dans_next_val = 0;
             longueur_next_val = strlen(n.next_val);
