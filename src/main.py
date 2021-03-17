@@ -53,11 +53,11 @@ with open(args.path_grammar, "r") as f:
     L.append("int main(int argc, char** argv) {") # main definition with args
     # Check if there is the right number of parameters (2: program name and the word to parse)
     L.append("\tif(argc != 2) {")
-    L.append("\t\tprintf(\"Command type: %s \"word_to_parse\"\", argv[0]);")
+    L.append("\t\tprintf(\"Command type: %s \'word_to_parse\'\", argv[0]);")
     L.append("\t\texit(1);")
     L.append("\t}")
 
-    L.append("\tchar * wordToParse = agrv[1];")
+    L.append("\tchar * wordToParse = argv[1];")
     L.append("\tparse" + list(dico_elements_parses.keys())[0] + "0(wordToParse);")
 
     L.append("\treturn 0;")
