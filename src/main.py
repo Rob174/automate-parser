@@ -59,7 +59,7 @@ with open(args.path_grammar, "r") as f:
     L.append("\t}")
 
     L.append("\tchar * wordToParse = agrv[1];")
-    L.append("\t*parse" + list(dico_elements_parses.keys())[0] + "0(wordToParse);")
+    L.append("\tparse" + list(dico_elements_parses.keys())[0] + "0(wordToParse);")
 
     L.append("\treturn 0;")
     L.append("}")
