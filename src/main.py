@@ -11,17 +11,51 @@ args = parser.parse_args()
 
 with open(args.path_grammar, "r") as f:
     L = ["""
-char* slice_str(char * input) {
+typedef struct _next {
+    char* next_val;
+    char* suite;
+}next;
+
+int strequ(char* str1,char* str2) {
+    int length = strlen(str1);
+    if(strlen(str2) != length)
+        return 0;
+    for (int i = 0; i < length;i++) {
+        if(str1[i] != str2[i])
+            return 0;
+    }
+    return 1;
+}
+next next_val(char * input) {
+    if(input == 0) { 
+        next n = {0,0};
+        return n;
+    }
     int length = strlen(input);
-    if(length == 0) {
-        return \"\";
+    if(length == 0) { 
+        next n = {0,0};
+        return n;
     }
-    char * new_str = malloc(sizeof(char)*(length-1));
-    for (int i = 1; i < length; i++) {
-        new_str[i-1] = input[i];
+    next n;
+    n.next_val = malloc(length*sizeof(char));
+    n.suite = malloc(length*sizeof(char));
+    int dans_next_val = 1;
+    int longueur_next_val;
+    for (int i = 0;i < length;i++) {
+        if(input[i] != ' ' && dans_next_val == 1) {
+            n.next_val[i] = input[i];
+        }
+        else if (input[i] == ' ') {
+            n.next_val[i] = '\\0';
+            dans_next_val = 0;
+            longueur_next_val = strlen(n.next_val);
+        }
+        else {
+            n.suite[i-longueur_next_val-1] = input[i];
+        }
     }
-    new_str[length-1] = '\\0';
-    return new_str;
+        
+    return n;
 }
 """]
 
@@ -39,18 +73,19 @@ char* slice_str(char * input) {
         L.append("\tprintf(\"Passage dans parse%s%d %%s\\n\",input);" % (head,i))
         L.append("\tchar* okReste = input;")
 
-        for i,lettre in enumerate(rule):
-            if lettre.lower() != lettre:
+        for i,lettre in enumerate(rule.split()):
+            if lettre.lower() != lettre: # Cas non-terminal
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
                 L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
                 """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
                 Si un terminal après s'arrêter au terminal"""
-                L.append("\tif (okReste == NULL) return 0;")
-            else:
-                L.append(f"\tif (okReste[0] != '{lettre}')")
+                L.append(f"\tif (okReste == NULL) return 0;")
+            else: # Cas terminal
+                L.append(f"\tnext n{i} = next_val(okReste);")
+                L.append(f"\tif (strequ(n{i}.next_val,\"{lettre}\") == 0)")
                 L.append(f"\t\treturn 0;")
                 L.append("\telse {")
-                L.append(f"\t\t okReste = slice_str(okReste);")
+                L.append(f"\t\t okReste = n{i}.suite;")
                 L.append("\t}")
         L.append("\treturn okReste;")
         L.append("}\n")

@@ -1,6 +1,8 @@
-S : a S b
-S : a b
-S : A B
-A : A A a
-A : a
-B : b
+S : int
+S : string
+S : { Assoc }
+Assoc : KeyVal AssocBis
+Assoc :
+AssocBis : , KeyVal AssocBis
+AssocBis :
+KeyVal : id = S
