@@ -32,7 +32,7 @@ with open(args.path_grammar, "r") as f:
                 Si un terminal après s'arrêter au terminal"""
                 L.append("\tif (ok == 0) return 0;")
             else:
-                L.append(f"\tif (input[{i*2}] != '{lettre}') return 0;")
+                L.append(f"\tif (input[{i}] != '{lettre}') return 0;")
         L.append("\treturn 1;")
         L.append("}\n")
     for head,liste_fct in dico_elements_parses.items():
@@ -53,7 +53,7 @@ with open(args.path_grammar, "r") as f:
     L.append("int main(int argc, char** argv) {") # main definition with args
     # Check if there is the right number of parameters (2: program name and the word to parse)
     L.append("\tif(argc != 2) {")
-    L.append("\t\tprintf(\"Command type: %s \'word_to_parse\'\", argv[0]);")
+    L.append("\t\tprintf(\"Command type: %s \'word_to_parse\'\\n\", argv[0]);")
     L.append("\t\texit(1);")
     L.append("\t}")
 
