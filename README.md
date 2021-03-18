@@ -10,7 +10,8 @@ Ce programme C une fois compilé pourra être executé avec en paramètre une ch
  1. Créer et placer un fichier `grammaire` dans le dossier racine du projet, comportant une grammaire type *(cf Définitions)*
  2. Compiler le projet python avec en paramètres: `grammaire -o parser`, un fichier `parser`.c sera ensuite généré
  3. Executer la commande `./Makefile.sh` générant un exécutable `parser`
- 4. Executer le programme avec la commande `./parser "A"`, `A` étant le mot à tester
+ 4. Si l'erreur `line 2: $'\r': command not found` apparaît, faire la commande `dos2unix ./Makefile.sh` et refaire l'étape **3.** 
+ 5. Executer le programme avec la commande `./parser "A"`, `A` étant le mot à tester
 
 Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**KO**"* sinon.
 
