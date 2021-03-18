@@ -1,5 +1,6 @@
 import os
 import argparse
+from remove_left_recur import main_remove_direct_lrecursivity
 print(os.getcwd())
 parser = argparse.ArgumentParser()
 parser.add_argument('path_grammar', type=str,
@@ -8,8 +9,9 @@ parser.add_argument('-o', dest='nom_fichier_output',
                     help="Spécifie le nom du fichier c de destination (sans l'extension)")
 
 args = parser.parse_args()
-
-with open(args.path_grammar, "r") as f:
+adapted_grammar_path = os.path.splitext(args.path_grammar)[0]+"_adapted.txt"
+main_remove_direct_lrecursivity(args.path_grammar,adapted_grammar_path)
+with open(adapted_grammar_path, "r") as f:
     L = ["""
 typedef struct _next {
     char* next_val;
@@ -64,7 +66,6 @@ next* next_val(char * input) {
 
     dico_elements_parses = {}
     for i,l in enumerate(f.readlines()):
-        l.replace(" ", "")
         [head, rule] = [e.strip() for e in l.strip().split(":")]
         if head not in dico_elements_parses.keys():
             dico_elements_parses[head] = ["parse%s%d" % (head,i)]

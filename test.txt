@@ -1,0 +1,38 @@
+
+
+a a a a a b b
+S => a S b => a a S b b => a a a S b b b
+                        => a a a a b b b
+                        => a a a A B b b => a a a a B b b => a a a a b b b
+                                         => a a a a A0 B b b => a a a a A a B b b => a a a a a (A0?) a B b b
+           => a a b b
+           => a A B b => a a B b => a a b b
+                      => a a A0 B b => a a A a B b => a a a a B b => a a a a b b
+                                    => a a a A0 a B b => a a a A a a B b => a a a a a a B b => a a a a a a b b
+                                                      => a a a A a A0 a B b => x
+
+Pas de solution
+
+S : a S b
+S : a b
+S : A B
+A : A A a
+A : a
+B : b
+
+a a a a a b b
+
+S => a S b => a A B b => a A A a B b => x impossible de n'ajouter qu'un seul a
+        S0      S3          A4
+
+S : a S b
+S : a b
+S : A B
+A : a
+A : a A0
+A0 : A a
+A0 : A a A0
+B : b
+
+S => a S b => a A B b =>  a a A0 B b => a a A a B b => a a a a B b => a a a a b b OK
+        S0      S2           A4            A05             A3              B7
