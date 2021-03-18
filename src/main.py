@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('path_grammar', type=str,
                     help='Chemin vers le fichier de grammaire')
 parser.add_argument('-o', dest='nom_fichier_output',
-                    help="Spécifie le nom du fichier c de destination (sans l'extension)")
+                    help="Specifie le nom du fichier c de destination (sans l'extension)")
 
 args = parser.parse_args()
 adapted_grammar_path = os.path.splitext(args.path_grammar)[0]+"_adapted.txt"
@@ -79,10 +79,10 @@ next* next_val(char * input) {
         rules = rule.split()
         for i,lettre in enumerate(rules):
             if lettre.lower() != lettre: # Cas non-terminal
-                """passage à revoir : comment séparer les parties à tester avec les variables"""
-                L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
-                """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
-                Si un terminal après s'arrêter au terminal"""
+                """passage a revoir : comment separer les parties a tester avec les variables"""
+                L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie interessante ; comment on decoupe ;
+                """split dans une boucle en deplacant le moment ou on coupe entre la variable courante et la suivante
+                Si un terminal apres s'arreter au terminal"""
                 L.append(f"\tif (okReste == NULL) return 0;")
             else: # Cas terminal
                 L.append(f"\tnext* n{i} = next_val(okReste);")
