@@ -1,5 +1,7 @@
 
 
+
+
 # automate-parser v1.0
 
 Ce programme réalisé en python dans le cadre de la formation d'automates et langages de l'[INSA Toulouse](http://www.insa-toulouse.fr/) a pour but de générer un programme C, reconnaissant une grammaire de type 2 (context free) précédement donnée.
@@ -10,7 +12,8 @@ Ce programme C une fois compilé pourra être executé avec en paramètre une ch
  1. Créer et placer un fichier `grammaire` dans le dossier racine du projet, comportant une grammaire type *(cf Définitions)*
  2. Compiler le projet python avec en paramètres: `grammaire -o parser`, un fichier `parser`.c sera ensuite généré
  3. Executer la commande `./Makefile.sh` générant un exécutable `parser`
- 4. Executer le programme avec la commande `./parser "A"`, `A` étant le mot à tester
+ 4. Si l'erreur `line 2: $'\r': command not found` apparaît, faire la commande `dos2unix ./Makefile.sh` et refaire l'étape **3.** 
+ 5. Executer le programme avec la commande `./parser "A"`, `A` étant le mot à tester
 
 Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**KO**"* sinon.
 
@@ -24,7 +27,6 @@ Le résultat sera *"**OK**"* si le mot appartient à la grammaire initiale, *"**
 | S : a S b <br> S : a b <br> S : A B <br> A : A A a <br> A : a <br> B : b |`a a a a b b` |![#78e08f](https://via.placeholder.com/15/78e08f/000000?text=+) **`OK`** théoriquement mais  en pratique choisi une autre règle avant la bonne et backtrack au parent				|
 | S : a S b <br> S : a b <br> S : A B <br> A : A A a <br> A : a <br> B : b |`a a a a b b b` |![#e55039](https://via.placeholder.com/15/e55039/000000?text=+) **`KO`**				|
 | S : int <br> S : string <br> S : { Assoc } <br> Assoc : KeyVal AssocBis <br> Assoc : <br> AssocBis : , KeyVal AssocBis <br> AssocBis : <br> KeyVal : id = S |`{ id = int , id = string }` |![#78e08f](https://via.placeholder.com/15/78e08f/000000?text=+) **`OK`**				|
-
 
 ## Détails de la réalisation:
 
