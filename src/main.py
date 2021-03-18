@@ -28,6 +28,7 @@ int strequ(char* str1,char* str2) {
 }
 next* next_val(char * input) {
     next* n;
+    n = malloc(sizeof(next));
     if(input == 0) { 
         n->next_val = 0;
         n->suite = 0;
@@ -39,7 +40,6 @@ next* next_val(char * input) {
         n->suite = 0;
         return n;
     }
-    n = malloc(sizeof(next));
     n->next_val = malloc(length*sizeof(char));
     n->suite = malloc(length*sizeof(char));
     int dans_next_val = 1;
@@ -78,9 +78,6 @@ next* next_val(char * input) {
         rules = rule.split()
         for i,lettre in enumerate(rules):
             if lettre.lower() != lettre: # Cas non-terminal
-                if lettre == head and i == 0:
-                    L.append(f"printf(\"")
-                    break
                 """passage à revoir : comment séparer les parties à tester avec les variables"""
                 L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie intéressante ; comment on découpe ;
                 """split dans une boucle en déplacant le moment où on coupe entre la variable courante et la suivante
@@ -88,7 +85,7 @@ next* next_val(char * input) {
                 L.append(f"\tif (okReste == NULL) return 0;")
             else: # Cas terminal
                 L.append(f"\tnext* n{i} = next_val(okReste);")
-                L.append(f"\tif (strequ(n{i}->next_val,\"{lettre}\") == 0)")
+                L.append(f"\tif ((n{i}->next_val == 0 && n{i}->suite == 0) || strequ(n{i}->next_val,\"{lettre}\") == 0)")
                 L.append(f"\t\treturn 0;")
                 L.append("\telse {")
                 L.append(f"\t\t okReste = n{i}->suite;")
