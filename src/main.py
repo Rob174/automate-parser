@@ -78,7 +78,7 @@ next* next_val(char * input) {
         rules = rule.split()
         for i,lettre in enumerate(rules):
             if lettre.lower() != lettre: # Cas non-terminal
-                """passage à revoir : comment separer les parties à tester avec les variables"""
+                """passage a revoir : comment separer les parties a tester avec les variables"""
                 L.append(f"\tokReste = parse{lettre}(okReste);") # A revoir comment on extrait la partie interessante ; comment on decoupe ;
                 """split dans une boucle en deplacant le moment ou on coupe entre la variable courante et la suivante
                 Si un terminal apres s'arreter au terminal"""
